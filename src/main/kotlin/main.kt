@@ -1,3 +1,5 @@
+import challenges.day01.Challenge1
+
 fun main() {
-  println("Hello World")
+  Challenge1().solve()
 }

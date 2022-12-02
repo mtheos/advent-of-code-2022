@@ -2,6 +2,7 @@ package challenges.day01
 
 import challenges.Challenge
 import Utils
+import java.util.regex.Pattern
 
 class CalorieCounting : Challenge {
   private val elfCalories: List<Int> by lazy {
@@ -9,7 +10,11 @@ class CalorieCounting : Challenge {
     parseInput(input)
   }
 
-  override fun preamble(): String = "Day 01 - Calorie Counting"
+  override fun preamble(): String {
+    val name = javaClass.simpleName.split(Pattern.compile("(?=\\p{Upper})")).joinToString(" ")
+    val day= javaClass.name.substringAfter(".day").substringBefore(".")
+    return "Day $day - $name"
+  }
   override fun solveEasy(): String {
     return "Part 1: ${elfCalories.max()}"
   }

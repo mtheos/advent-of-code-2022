@@ -5,17 +5,27 @@ import Utils
 import challenges.day02.RpsResult.Draw
 import challenges.day02.RpsResult.Lose
 import challenges.day02.RpsResult.Win
+import java.util.regex.Pattern
 
 class RockPaperScissors : Challenge {
-  private val rpsRounds: List<RpsRound> by lazy {
+  private val rpsRoundsEasy: List<RpsRound> by lazy {
     val input = Utils.readInput(this.javaClass, "input.txt")
-    parseInput(input)
+    parseInputEasy(input)
+  }
+  private val rpsRoundsHard: List<RpsRound> by lazy {
+    val input = Utils.readInput(this.javaClass, "input.txt")
+    parseInputHard(input)
   }
 
-  override fun preamble(): String = "Day 02 - Rock Paper Scissors"
+  override fun preamble(): String {
+    val name = javaClass.simpleName.split(Pattern.compile("(?=\\p{Upper})")).joinToString(" ")
+    val day= javaClass.name.substringAfter(".day").substringBefore(".")
+    return "Day $day - $name"
+  }
+
   override fun solveEasy(): String {
     var score = 0
-    rpsRounds.forEach {
+    rpsRoundsEasy.forEach {
       score += it.score()
     }
     return "Part 1: $score"
@@ -23,24 +33,31 @@ class RockPaperScissors : Challenge {
 
   override fun solveHard(): String {
     var score = 0
-    rpsRounds.forEach {
-      score += it.forceScore()
+    rpsRoundsHard.forEach {
+      score += it.score()
     }
     return "Part 2: $score"
   }
 
-  private fun parseInput(input: List<String>): List<RpsRound> {
+  private fun parseInputEasy(input: List<String>): List<RpsRound> {
     return arrayListOf<RpsRound>().apply {
       input.forEach {
-        add(RpsRound(RpsChoice.from(it[0]), RpsChoice.from(it[2]), RpsChoice.forResult(it[0], it[2])))
+        add(RpsRound(RpsChoice.from(it[0]), RpsChoice.from(it[2])))
+      }
+    }
+  }
+
+  private fun parseInputHard(input: List<String>): List<RpsRound> {
+    return arrayListOf<RpsRound>().apply {
+      input.forEach {
+        add(RpsRound(RpsChoice.from(it[0]), RpsChoice.forResult(it[0], it[2])))
       }
     }
   }
 }
 
-class RpsRound(private val opponent: RpsChoice, private val you: RpsChoice, private val forceResult: RpsChoice) {
+class RpsRound(private val opponent: RpsChoice, private val you: RpsChoice) {
   fun score(): Int = RpsResult.score(result(you, opponent)) + RpsChoice.score(you)
-  fun forceScore(): Int = RpsResult.score(result(you, forceResult)) + RpsChoice.score(forceResult)
 
   private fun result(y: RpsChoice, o: RpsChoice): RpsResult {
     if (y == o) {
@@ -118,9 +135,9 @@ enum class RpsChoice {
       }
     }
 
-    fun forResult(o: Char, y: Char): RpsChoice {
+    fun forResult(o: Char, r: Char): RpsChoice {
       val op = from(o)
-      return when (RpsResult.from(y)) {
+      return when (RpsResult.from(r)) {
         Lose -> loseAgainst(op)
         Draw -> op
         Win -> winAgainst(op)

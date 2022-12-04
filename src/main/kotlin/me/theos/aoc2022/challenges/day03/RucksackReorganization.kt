@@ -1,12 +1,12 @@
-package challenges.day03
+package me.theos.aoc2022.challenges.day03
 
-import challenges.Challenge
-import Utils
+import me.theos.aoc2022.challenges.Challenge
+import me.theos.aoc2022.challenges.Utils
 import java.util.regex.Pattern
 
 class RucksackReorganization : Challenge {
   private val ruckSacks: List<RuckSack> by lazy {
-    val input = Utils.readInput(this.javaClass, "input.txt")
+    val input = Utils.getChallengeInput(this.javaClass)
     parseInput(input)
   }
 
@@ -26,7 +26,7 @@ class RucksackReorganization : Challenge {
 
   override fun solveHard(): String {
     var priorities = 0
-    ruckSacks.chunked(3).forEach {(one,two,three) ->
+    ruckSacks.chunked(3).forEach {(one, two, three) ->
       priorities += one.allItems().intersect(two.allItems()).intersect(three.allItems()).sumOf { ch -> ch.priority() }
     }
     return "Part 2: $priorities"

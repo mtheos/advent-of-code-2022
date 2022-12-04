@@ -1,19 +1,19 @@
-package challenges.day02
+package me.theos.aoc2022.challenges.day02
 
-import challenges.Challenge
-import Utils
-import challenges.day02.RpsResult.Draw
-import challenges.day02.RpsResult.Lose
-import challenges.day02.RpsResult.Win
+import me.theos.aoc2022.challenges.Challenge
+import me.theos.aoc2022.challenges.Utils
+import me.theos.aoc2022.challenges.day02.RpsResult.Draw
+import me.theos.aoc2022.challenges.day02.RpsResult.Lose
+import me.theos.aoc2022.challenges.day02.RpsResult.Win
 import java.util.regex.Pattern
 
 class RockPaperScissors : Challenge {
   private val rpsRoundsEasy: List<RpsRound> by lazy {
-    val input = Utils.readInput(this.javaClass, "input.txt")
+    val input = Utils.getChallengeInput(this.javaClass)
     parseInputEasy(input)
   }
   private val rpsRoundsHard: List<RpsRound> by lazy {
-    val input = Utils.readInput(this.javaClass, "input.txt")
+    val input = Utils.getChallengeInput(this.javaClass)
     parseInputHard(input)
   }
 

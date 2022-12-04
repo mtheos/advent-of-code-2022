@@ -1,12 +1,12 @@
-package challenges.day01
+package me.theos.aoc2022.challenges.day01
 
-import challenges.Challenge
-import Utils
+import me.theos.aoc2022.challenges.Challenge
+import me.theos.aoc2022.challenges.Utils
 import java.util.regex.Pattern
 
 class CalorieCounting : Challenge {
   private val elfCalories: List<Int> by lazy {
-    val input = Utils.readInput(this.javaClass, "input.txt")
+    val input = Utils.getChallengeInput(this.javaClass)
     parseInput(input)
   }
 

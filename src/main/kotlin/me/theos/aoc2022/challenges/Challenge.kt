@@ -1,4 +1,4 @@
-package challenges
+package me.theos.aoc2022.challenges
 
 interface Challenge {
   fun preamble(): String

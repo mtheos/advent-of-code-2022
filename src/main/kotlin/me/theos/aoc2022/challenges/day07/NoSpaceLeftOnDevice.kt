@@ -2,18 +2,11 @@ package me.theos.aoc2022.challenges.day07
 
 import me.theos.aoc2022.challenges.Challenge
 import me.theos.aoc2022.challenges.Utils
-import java.util.regex.Pattern
 
 class NoSpaceLeftOnDevice : Challenge {
   private val fsRoot: AoCDirectory by lazy {
     val input = Utils.getChallengeInput(this.javaClass)
     parseInput(input)
-  }
-
-  override fun preamble(): String {
-    val name = javaClass.simpleName.split(Pattern.compile("(?=\\p{Upper})")).joinToString(" ")
-    val day = javaClass.name.substringAfter(".day").substringBefore(".")
-    return "Day $day - $name"
   }
 
   override fun solveEasy(): String {
@@ -86,7 +79,7 @@ data class AoCDirectory (val name: String, val parent: AoCDirectory?) {
   }
 
   private fun dirSizes(sizes: MutableMap<AoCDirectory, Int>): MutableMap<AoCDirectory, Int> {
-    children.forEach() {
+    children.forEach {
       it.dirSizes(sizes)
     }
     sizes[this] = size()

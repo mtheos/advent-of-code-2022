@@ -2,18 +2,11 @@ package me.theos.aoc2022.challenges.day04
 
 import me.theos.aoc2022.challenges.Challenge
 import me.theos.aoc2022.challenges.Utils
-import java.util.regex.Pattern
 
 class CampCleanup : Challenge {
   private val sections: List<Pair<Set<Int>, Set<Int>>> by lazy {
     val input = Utils.getChallengeInput(this.javaClass)
     parseInput(input)
-  }
-
-  override fun preamble(): String {
-    val name = javaClass.simpleName.split(Pattern.compile("(?=\\p{Upper})")).joinToString(" ")
-    val day= javaClass.name.substringAfter(".day").substringBefore(".")
-    return "Day $day - $name"
   }
 
   override fun solveEasy(): String {

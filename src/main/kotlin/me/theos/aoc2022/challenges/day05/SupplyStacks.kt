@@ -3,7 +3,6 @@ package me.theos.aoc2022.challenges.day05
 import me.theos.aoc2022.challenges.Challenge
 import me.theos.aoc2022.challenges.Utils
 import java.util.Stack
-import java.util.regex.Pattern
 
 class SupplyStacks : Challenge {
   private val stacks: List<Stack<Char>>
@@ -15,12 +14,6 @@ class SupplyStacks : Challenge {
       stacks = first
       steps = second
     }
-  }
-
-  override fun preamble(): String {
-    val name = javaClass.simpleName.split(Pattern.compile("(?=\\p{Upper})")).joinToString(" ")
-    val day= javaClass.name.substringAfter(".day").substringBefore(".")
-    return "Day $day - $name"
   }
 
   override fun solveEasy(): String {

@@ -2,18 +2,11 @@ package me.theos.aoc2022.challenges.day03
 
 import me.theos.aoc2022.challenges.Challenge
 import me.theos.aoc2022.challenges.Utils
-import java.util.regex.Pattern
 
 class RucksackReorganization : Challenge {
   private val ruckSacks: List<RuckSack> by lazy {
     val input = Utils.getChallengeInput(this.javaClass)
     parseInput(input)
-  }
-
-  override fun preamble(): String {
-    val name = javaClass.simpleName.split(Pattern.compile("(?=\\p{Upper})")).joinToString(" ")
-    val day= javaClass.name.substringAfter(".day").substringBefore(".")
-    return "Day $day - $name"
   }
 
   override fun solveEasy(): String {

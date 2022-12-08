@@ -5,20 +5,14 @@ import me.theos.aoc2022.challenges.Challenges
 
 fun main() {
   val challenges = Challenges.load()
-  challenges.forEach {
-    when (!it.isInterface && Challenge::class.java.isAssignableFrom(it)) {
-      true -> {
-        val challenge = it.getConstructor().newInstance()
-        (challenge as Challenge).run {
-          println(preamble())
-          println("   ${solveEasy()}")
-          println("   ${solveHard()}")
-          println()
-        }
-      }
-      false -> {
-        // nop
+  challenges.filter { !it.isInterface && Challenge::class.java.isAssignableFrom(it) }
+    .map { it.getConstructor().newInstance() as Challenge }
+    .sortedBy { it }.forEach { challenge ->
+      challenge.run {
+        println(preamble())
+        println("   ${solveEasy()}")
+        println("   ${solveHard()}")
+        println()
       }
     }
-  }
 }

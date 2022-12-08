@@ -5,7 +5,6 @@ import me.theos.aoc2022.challenges.Utils
 import me.theos.aoc2022.challenges.day02.RpsResult.Draw
 import me.theos.aoc2022.challenges.day02.RpsResult.Lose
 import me.theos.aoc2022.challenges.day02.RpsResult.Win
-import java.util.regex.Pattern
 
 class RockPaperScissors : Challenge {
   private val rpsRoundsEasy: List<RpsRound> by lazy {
@@ -15,12 +14,6 @@ class RockPaperScissors : Challenge {
   private val rpsRoundsHard: List<RpsRound> by lazy {
     val input = Utils.getChallengeInput(this.javaClass)
     parseInputHard(input)
-  }
-
-  override fun preamble(): String {
-    val name = javaClass.simpleName.split(Pattern.compile("(?=\\p{Upper})")).joinToString(" ")
-    val day= javaClass.name.substringAfter(".day").substringBefore(".")
-    return "Day $day - $name"
   }
 
   override fun solveEasy(): String {

@@ -13,14 +13,14 @@ class RegolithReservoir : Challenge {
 
   override fun solveEasy(): String {
     cave.fillWithTheSandsOfTime()
-    cave.draw()
+//    cave.draw()
     val sands = cave.filter { it.value == Tile.Sand }.count()
     return "Part 1: $sands"
   }
 
   override fun solveHard(): String {
     cave.letTheSandsOfTimeHitTheFloor()
-    cave.draw()
+//    cave.draw()
     val sands = cave.filter { it.value == Tile.Sand }.count()
     return "Part 2: $sands"
   }
@@ -127,7 +127,7 @@ class RegolithReservoir : Challenge {
         this[grain.x, grain.y + 1] -> grain.location.apply { translate(0, 1) }
         this[grain.x - 1, grain.y + 1] -> grain.location.apply { translate(-1, 1) }
         this[grain.x + 1, grain.y + 1] -> grain.location.apply { translate(1, 1) }
-        else -> grain.location.apply { translate(0, 0) }
+        else -> grain.location
       }
     }
 

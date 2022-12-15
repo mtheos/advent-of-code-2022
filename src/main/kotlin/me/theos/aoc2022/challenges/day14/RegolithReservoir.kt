@@ -146,8 +146,8 @@ class RegolithReservoir : Challenge {
   }
 
   private enum class Tile(val repr: String) {
-    Air(". "),
-    Sand("o "),
-    Wall("# ")
+    Air("  "),
+    Sand("x "),
+    Wall("█ ")
   }
 }

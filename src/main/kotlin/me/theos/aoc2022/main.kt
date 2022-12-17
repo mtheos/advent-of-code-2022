@@ -7,7 +7,7 @@ fun main() {
   val challenges = Challenges.load()
   challenges.filter { !it.isInterface && Challenge::class.java.isAssignableFrom(it) }
     .map { it.getConstructor().newInstance() as Challenge }
-    .sortedBy { it }.forEach { challenge ->
+    .sortedBy { it }.last().let { challenge ->
       challenge.run {
         println(preamble())
         println("   ${solveEasy()}")

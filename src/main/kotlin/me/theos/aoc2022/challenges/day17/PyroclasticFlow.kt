@@ -14,12 +14,12 @@ class PyroclasticFlow : Challenge {
   }
 
   override fun solveEasy(): String {
-    val highestPoint = Chamber(currents).popLockAndRocKIt(2022)
+    val highestPoint = Chamber(currents).`nowYou'reThinkingInCycles`(2022)
     return "Part 1: $highestPoint"
   }
 
   override fun solveHard(): String {
-    val highestPoint = Chamber(currents).popLockAndRocKIt(1_000_000_000_000)
+    val highestPoint = Chamber(currents).`nowYou'reThinkingInCycles`(1_000_000_000_000)
     return "Part 2: $highestPoint"
   }
 
@@ -48,8 +48,8 @@ class PyroclasticFlow : Challenge {
   }
 
   private class Chamber(val currents: List<AirFlow>) : HashMap<Point, Rock>() {
-    private var lowestPoint = 0L
-    private var highestPoint = 0L
+    private var currentsIdx = 0
+    private var shapesIdx = 0
     private val current = sequence {
       var idx = 0
       while (true) {
@@ -90,41 +90,63 @@ class PyroclasticFlow : Challenge {
       }
       return super.put(key, value)
     }
-    fun popLockAndRocKIt(droppedRocks: Long): Long {
-      var count = droppedRocks
+
+    // Good naming vs proper punctuation...it was never good naming to begin with
+    fun `nowYou'reThinkingInCycles`(droppedRocks: Long): Long {
+      // Sim at most 5000 rocks and get the height changes
+      val heightChange = sim5000Rocks()
+      val (preamble, cycle) = findCycle(heightChange)
+      val cycles = if (droppedRocks % cycle.size < preamble.size) {
+        droppedRocks / cycle.size - 1
+      } else {
+        droppedRocks / cycle.size
+      }
+      val residual = (droppedRocks - (cycles * cycle.size) - preamble.size).toInt()
+      return preamble.sum() + cycle.sum() * cycles + cycle.take(residual).sum()
+    }
+
+    private fun sim5000Rocks(): List<Int> {
+      var highestPoint = 0L
+      val heightChange = mutableListOf<Int>()
+      // double the work for part 1 /shrug
+      var count = 5000
       var rock = Rock(shapes.next(), Point(newBlockXOffset, highestPoint + newBlockYOffset))
       while (count-- > 0) {
-        if (count > 0 && count % 100_000 == 0L) {
-          cull()
-        }
         dropAndWeave(rock)
         emplace(rock)
         if (rock.top > highestPoint) {
+          heightChange.add((rock.top - highestPoint).toInt())
           highestPoint = rock.top
+        } else {
+          heightChange.add(0)
         }
         rock = Rock(shapes.next(), Point(newBlockXOffset, highestPoint + newBlockYOffset))
       }
-      return highestPoint
+      return heightChange
     }
 
-    private fun cull() {
-      var y = highestPoint
-      var cull = false
-      var newLowest = lowestPoint
-      while (y >= lowestPoint) {
-        val row = (0..6).map { Point(it, y) }
-        if (!cull && row.all { this[it] != null }) {
-          cull = true
-          newLowest = y
-          y--
-          continue
+    // assume min cycle length of 10 to avoid short string matches
+    // find the smallest substring whose next occurrence is idx + len + 1
+    // ???
+    // profit
+    private fun findCycle(heightChange: List<Int>): Pair<List<Int>, List<Int>> {
+      val minCycle = 10
+      val heights = heightChange.fold("") { acc, it -> acc + it }
+      var cycleLen = minCycle
+      var idx = 0
+      while (true) {
+        val maybeCycle = heights.substring(idx, idx + cycleLen)
+        if (heights.substring(idx + cycleLen).indexOf(maybeCycle) == 0) {
+          val preamble = heights.substring(0, idx).asIterable().map { it.digitToInt() }
+          val cycle = maybeCycle.asIterable().map { it.digitToInt() }
+          return Pair(preamble, cycle)
+        } else if (heights.substring(idx + cycleLen).contains(maybeCycle)) {
+          cycleLen++
+        } else {
+          cycleLen = minCycle
+          idx++
         }
-        if (cull) {
-          row.forEach { this.remove(it) }
-        }
-        y--
       }
-      lowestPoint = newLowest
     }
 
     fun emplace(rock: Rock) {
@@ -162,7 +184,7 @@ class PyroclasticFlow : Challenge {
 
     fun draw(falling: Rock) {
       println("+--------------+")
-      for (y in max(highestPoint + newBlockYOffset, falling.top) downTo 1) {
+      for (y in falling.top downTo 1) {
         print("|")
         repeat(7) { x ->
           val ch = if (this[Point(x, y)] != null) {

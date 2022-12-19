@@ -62,48 +62,48 @@ class NoSpaceLeftOnDevice : Challenge {
     }
     return root
   }
-}
 
-data class AoCDirectory (val name: String, val parent: AoCDirectory?) {
-  val children = mutableListOf<AoCDirectory>()
-  val files = mutableListOf<AoCFile>()
+  data class AoCDirectory(val name: String, val parent: AoCDirectory?) {
+    val children = mutableListOf<AoCDirectory>()
+    val files = mutableListOf<AoCFile>()
 
-  init {
-    if (parent == null && name != "/") {
-      throw AssertionError()
-    }
-  }
-
-  fun dirSizes(): Map<AoCDirectory, Int> {
-    return dirSizes(mutableMapOf())
-  }
-
-  private fun dirSizes(sizes: MutableMap<AoCDirectory, Int>): MutableMap<AoCDirectory, Int> {
-    children.forEach {
-      it.dirSizes(sizes)
-    }
-    sizes[this] = size()
-    return sizes
-  }
-
-  fun size(): Int {
-    return files.sumOf { it.size } + children.sumOf { it.size() }
-  }
-
-  fun path(): String {
-    if (parent != null) {
-      return if (parent.name == "/") {
-        "$parent$name"
-      } else {
-        "$parent/$name"
+    init {
+      if (parent == null && name != "/") {
+        throw AssertionError()
       }
     }
-    return name
+
+    fun dirSizes(): Map<AoCDirectory, Int> {
+      return dirSizes(mutableMapOf())
+    }
+
+    private fun dirSizes(sizes: MutableMap<AoCDirectory, Int>): MutableMap<AoCDirectory, Int> {
+      children.forEach {
+        it.dirSizes(sizes)
+      }
+      sizes[this] = size()
+      return sizes
+    }
+
+    fun size(): Int {
+      return files.sumOf { it.size } + children.sumOf { it.size() }
+    }
+
+    fun path(): String {
+      if (parent != null) {
+        return if (parent.name == "/") {
+          "$parent$name"
+        } else {
+          "$parent/$name"
+        }
+      }
+      return name
+    }
+
+    override fun toString(): String {
+      return path()
+    }
   }
 
-  override fun toString(): String {
-    return path()
-  }
+  data class AoCFile(val name: String, val size: Int)
 }
-
-data class AoCFile (val name: String, val size: Int)

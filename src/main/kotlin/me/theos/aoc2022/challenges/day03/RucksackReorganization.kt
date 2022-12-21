@@ -34,22 +34,21 @@ class RucksackReorganization : Challenge {
       }
     }
   }
-}
 
-class RuckSack(private val compartment1: List<Char>, private val compartment2: List<Char>) {
-  fun commonItems(): Set<Char> {
-    return compartment1.toSet().intersect(compartment2.toSet())
+  private class RuckSack(private val compartment1: List<Char>, private val compartment2: List<Char>) {
+    fun commonItems(): Set<Char> {
+      return compartment1.toSet().intersect(compartment2.toSet())
+    }
+
+    fun allItems(): Set<Char> {
+      return compartment1.union(compartment2)
+    }
   }
-
-  fun allItems(): Set<Char> {
-    return compartment1.union(compartment2)
-  }
-}
-
-fun Char.priority(): Int {
-  return if (this.isLowerCase()) {
-    this.minus('a').inc()
-  } else {
-    this.minus('A').plus(27)
+  private fun Char.priority(): Int {
+    return if (this.isLowerCase()) {
+      this.minus('a').inc()
+    } else {
+      this.minus('A').plus(27)
+    }
   }
 }
